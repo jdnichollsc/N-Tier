@@ -7,9 +7,9 @@ using System.Linq.Expressions;
 namespace DataAccess
 {
     /// <summary>
-    /// Repositorio Genérico para acceder a nuestra Capa de Acceso a Datos
+    /// Generic repository to access our data access layer
     /// <para>
-    /// Arquitectura N-Capas
+    /// N-tier architecture
     /// </para>
     /// <example> 
     /// <code>
@@ -17,15 +17,15 @@ namespace DataAccess
     /// </code>
     /// </example> 
     /// <remarks>
-    /// Autor: Juan David Nicholls Cardona
-    /// Fecha: 2014/03/01
+    /// Author: Juan David Nicholls Cardona
+    /// Date: 2014/03/01
     /// </remarks>
     /// </summary>
     public class GenericRepository : IGenericRepository
     {
         private DataContext _context;
         ///<summary>
-        /// Acceder a la Base de Datos mediante nuestro Contexto, garantizando una única instancia
+        /// Access the database through our context, ensuring a single instance
         ///</summary>
         private DataContext Context
         {
@@ -34,14 +34,14 @@ namespace DataAccess
 
         #region [ CRUD Table ]
         ///<summary>
-        /// Crear un nuevo registro
+        /// Create a new record
         ///</summary>
         /// <example> 
         /// <code>
-        /// var user = repository.Create&lt;User&gt;(user);
+        /// var user = repository.Create<User>(user);
         /// </code>
         /// </example> 
-        /// <param name="entity">Nuevo registro con los datos requeridos</param>
+        /// <param name="entity">New record with the required data</param>
         public TEntity Create<TEntity>(TEntity entity)
             where TEntity : class
         {
@@ -51,14 +51,14 @@ namespace DataAccess
         }
 
         ///<summary>
-        /// Consultar un registro mediante una condición
+        /// Get a record by a condition
         ///</summary>
         /// <example> 
         /// <code>
-        /// var user = repository.Read&lt;User&gt;(x=> x.FirstName == "Juan David");
+        /// var user = repository.Read<User>(x=> x.FirstName == "Juan David");
         /// </code>
         /// </example> 
-        /// <param name="criteria">Condición de la Consulta</param>
+        /// <param name="criteria">Condition of the query</param>
         public TEntity Read<TEntity>(Expression<Func<TEntity, bool>> criteria)
             where TEntity : class
         {
@@ -66,14 +66,14 @@ namespace DataAccess
         }
 
         ///<summary>
-        /// Consultar un registro mediante la clave primaria
+        /// Get a record using the primary key
         ///</summary>
         /// <example> 
         /// <code>
-        /// var user = repository.ReadById&lt;User&gt;(123);
+        /// var user = repository.ReadById<User>(123);
         /// </code>
         /// </example> 
-        /// <param name="id">Clave Primaria</param>
+        /// <param name="id">Primary Key</param>
         public TEntity ReadById<TEntity>(object id)
             where TEntity : class
         {
@@ -81,18 +81,18 @@ namespace DataAccess
         }
 
         ///<summary>
-        /// Consultar registros mediante una condición, obtener la cantidad total, paginar e incluir la consulta de entidades relacionadas
+        /// Get records by a condition, get the total amount, paginated and include consulting related entities
         ///</summary>
         /// <example> 
         /// <code>
-        /// var users = repository.ReadById&lt;User&gt;(x=> x.FirstName == "Juan David", out total, 0, 100, x => x.UserProducts);
+        /// var users = repository.ReadById<User>(x=> x.FirstName == "Juan David", out total, 0, 100, x => x.UserProducts);
         /// </code>
         /// </example> 
-        /// <param name="criteria">Condición de la Consulta</param>
-        /// <param name="total">Cantidad Total de registros</param>
-        /// <param name="index">Posición Inicial</param>
-        /// <param name="size">Cantidad de registros a obtener</param>
-        /// <param name="includes">Entidades relacionadas a incluir en la Consulta</param>
+        /// <param name="criteria">Condition of the query</param>
+        /// <param name="total">Total number of records</param>
+        /// <param name="index">Initial position</param>
+        /// <param name="size">Quantity of records to obtain</param>
+        /// <param name="includes">Related entities to be included in the query/param>
         public IQueryable<TEntity> Filter<TEntity>(Expression<Func<TEntity, bool>> criteria,
                                                    out int total,
                                                    int index = 0,
@@ -123,14 +123,14 @@ namespace DataAccess
         }
 
         ///<summary>
-        /// Actualizar un registro
+        /// Update a record
         ///</summary>
         /// <example> 
         /// <code>
-        /// bool updated = repository.Update&lt;User&gt;(user);
+        /// bool updated = repository.Update<User>(user);
         /// </code>
         /// </example> 
-        /// <param name="entity">Un registro a actualizar</param>
+        /// <param name="entity">A record to update</param>
         public bool Update<TEntity>(TEntity entity)
             where TEntity : class
         {
@@ -143,14 +143,14 @@ namespace DataAccess
         }
 
         ///<summary>
-        /// Borrar un registro
+        /// Delete a record
         ///</summary>
         /// <example> 
         /// <code>
-        /// bool deleted = repository.Delete&lt;User&gt;(user);
+        /// bool deleted = repository.Delete<User>(user);
         /// </code>
         /// </example> 
-        /// <param name="entity">Un registro a eliminar</param>
+        /// <param name="entity">A record to delete</param>
         public bool Delete<TEntity>(TEntity entity)
             where TEntity : class
         {
@@ -167,15 +167,15 @@ namespace DataAccess
         #region [ Stored Procedures ]
         
         ///<summary>
-        /// Consultar datos mediante un Procedimiento Almacenado
+        /// Get data using a stored procedure
         ///</summary>
         /// <example> 
         /// <code>
-        /// var users = repository.SqlQuery&lt;User&gt;("spEjemplo {0}, {1}", 1, "hola");
+        /// var users = repository.SqlQuery<User>("spEjemplo {0}, {1}", 1, "hola");
         /// </code>
         /// </example> 
-        /// <param name="query">Consulta</param>
-        /// <param name="parameters">Datos de la Consulta</param>
+        /// <param name="query">Query</param>
+        /// <param name="parameters">Data</param>
         public List<TEntity> SqlQuery<TEntity>(string query, params object[] parameters)
             where TEntity : class
         {
@@ -183,15 +183,15 @@ namespace DataAccess
         }
 
         ///<summary>
-        /// Ejecutar un Procedimiento Almacenado y obtener la cantidad de filas afectadas
+        /// Execute a Stored Procedure and get the number of rows affected
         ///</summary>
         /// <example>
         /// <code>
         /// repository.ExecuteSqlCommand("EXEC spEjemplo {0}, {1}", 1, "hola");
         /// </code>
         /// </example>
-        /// <param name="query">Consulta</param>
-        /// <param name="parameters">Datos de la Consulta</param>
+        /// <param name="query">Query</param>
+        /// <param name="parameters">Data</param>
         public int ExecuteSqlCommand(string query, params object[] parameters)
         {
             return Context.Database.ExecuteSqlCommand(query, parameters);
